@@ -1,21 +1,22 @@
-// Ellie  Beta
-// Client ID =  459469196527665162
-
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const prefix = "$"
+const prefix = "$";
+var approvedChannels = ["460156053682651167"];
+const fs = require("fs");
+
 
 
 
 client.on('ready', () => {
-    console.log("Ellie is now running. || " + Date());
-    console.log("";
-    client.user.setActivity('$help to get started.');
+ console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+ client.user.setActivity(`Serving ${client.guilds.size} servers | $help`);
 })
 
 
+
 client.on("message", (message) => {
+
+
 
     if (message.content === "$help") {
 
@@ -39,6 +40,9 @@ client.on("message", (message) => {
                 "fields": [{
                         "name": "$date",
                         "value": "Retrieves date."
+                    },{
+                        "name": "$currencyStart",
+                        "value": "DISABLED FOR YOU, CAUSE YOUR NOT IN A SCRATCH COIN SERVER. "
                     },
                     {
                         "name": "$predict <content>",
@@ -61,10 +65,6 @@ client.on("message", (message) => {
                         "value": "Tells you the creator of the bot. Gee, this command will totally be used a lot. amiright?"
                     },
                     {
-                        "name": "*Moderation Commands*",
-                        "value": "Note, that these commands are W.I.P!"
-                    },
-                    {
                         "name": "$kick <user> <reason>",
                         "value": "Kicks the user from the server. Buggy command, disabled by default."
                     },
@@ -79,16 +79,23 @@ client.on("message", (message) => {
                                         {
                         "name": "$advertiseRequest <email> @Laphatize",
                         "value": "This can be used for those who want to advertise with Ellie."
+                    },
+                     {
+                        "name": "$purge <amount>",
+                        "value": "Deletes <amount> amount of messages."
                     }
+
                 ]
             }
+            
+            
         })
-
-
+    //message.channel.send(":wave: By the way..have you heard of this thing called Listcord? It's this awesome place for you to share and discover new and exciting bots! Check it out for yourself, www.listcord.com.")
+   // message.channel.send("[AD] This is a message from our sponsors! :)");
+   // message.channel.send("***Listcord - The Discord Bot List*** @everyone\n*A simple, easy-to-use Discord bot list. Find the perfect bot for your server,\nvote for your favorites, and even add your own bot to our list!*\n*We love developers, and we'd love to have your bot with us.\n**Features:**\n- Sexy UI.\n- Tons of cool bots.\n- Search for bots or sort them.\n- Voting for bots.\n- Actively developed, new features every day!\nJoin us at https://www.listcord.com.\nAdd your bot to our list: https://www.listcord.com/developers/new\nCheck our our API docs if you're pro developer: https://www.listcord.com/developers/docs");
     }
 
     if (message.content.startsWith(prefix + "date")) {
-        console.log("COMMAND: " + message.content + " || " + message.content.author + " || " + Date())
         message.channel.send({
             embed: {
                 color: 3447003,
@@ -111,6 +118,15 @@ client.on("message", (message) => {
 
     }
 
+    if (message.content === "$toxic") {
+        
+        message.delete();
+        //message.channel.send("Hey everyone, Ellie will be down for a short period. The developer is working hard to bring it back up again.")
+    //  message.channel.send("I'm baaaackkk.");
+        
+        message.channel.send("Psst...hear of this awesome thing called Listcord? You should upvote our bot..https://www.listcord.com/bot/459180810742923274")
+        
+    }
 
     if (message.content.startsWith("$poll")) {
 
@@ -144,6 +160,12 @@ client.on("message", (message) => {
 
 
     if (message.content === "$creator") {
+
+        message.channel.send("@Laphatize is my core creator.")
+
+    }
+    
+        if (message.content === "$currencyStart") {
 
         message.channel.send("@Laphatize is my core creator.")
 
@@ -269,34 +291,163 @@ if (message.content === "$test"){
 
 }
 
-/*
 
-if (message.content === "$verify") {
+if (approvedChannels.includes(message.channel.id)) {
+if (message.content.startsWith("$verify")) {
 
- if(message.author.roles.find("name", "verified")) {
 
-    message.reply("You're already verified!")
+    console.log("true")
+if (message.member.roles.find("name", "verified")) { message.reply("You're already verified!")} else {
+    try {
 
- } else {
 
-    var unverifiedRole = member.guild.roles.find('name', 'unverified');
-    var verifiedRole = member.guild.roles.find('name', 'verified');
+    var member = message.mentions.members.first();
+    member.addRole("459811222959947779");
+    member.removeRole("459812165348491264") 
+    member.sendMessage("You've been verified. Please make sure to read any guidelines the server may have!")
+    message.delete(1000)
+    } catch(err) {
 
-    var member = message.author.id;
-    member.removeRole(unverifiedRole)
-    member.addRole(verifiedRole)
-
- }
+        message.sendMessage("Something went wrong with verifying you. The correct syntax is: `$verify @yourusername`")
+        console.log(err);
+        console.log("---- IMPORTANT VARIABLES ----");
+        console.log("Variable 'member' = " + member);
+    }
 }
-*/
+
+}
+} else {
+
+    if (message.content.startsWith("$verify")) {
+
+        message.reply("This server/channel isn't configured for Ellie Verify. If you are the server owner, you can request for your\nserver to be part of the Ellie Verify system using the command `$requestVerify <servercode> <channelid>`")
+    }
+
+
+
+
+}
+
+
+if (message.content.startsWith("$requestVerify")) {
+
+
+    try {
+    message.reply("I'm still working on the request feature. But, copy you message and save it for later.\n" + message.content);
+} catch(err) {
+
+
+    message.reply("Something went wrong!!")
+
+}
+
+}
+
+
+
+
+if (message.content.startsWith("$purge")) {
+
+try {
+
+
+    var purgePre = message.content;
+    var amount = purgePre.slice(7);
+
+    if (amount > 100) {
+
+
+        message.reply("Must be be under 100. :x:")
+
+
+    } else {
+
+        message.channel.bulkDelete(amount);
+        message.channel.send("Deleted " + amount + " messages! :white_check_mark: ")
+
+    }
+
+
+
+} catch(err) {
+
+
+    message.channel.send(":x: Something went wrong!");
+
+
+
+
+
+}
+
+
+
+}
+
+var lico = "203135593692135425";
+
+  const args = message.content.split(" ").slice(1);
+
+  if (message.content.startsWith("$eval")) {
+    if(message.author.id !== lico) return;
+    try {
+      const code = args.join(" ");
+      let evaled = eval(code);
+
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+
+      message.channel.send(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.channel.send("Error doing that.");
+    }
+  }
+
+
+if (message.content.startsWith("$move")) {
+    
+    var channelR = message.content.slice(5)
+    message.channel.send("Convo moved to: " + channelR);
+    
+}
+
+
+
+
+
+
+
 });
 
 
 client.on("guildMemberAdd", member => {
 
-    var role = member.guild.roles.find('name', 'unverified');
-    member.addRole(role)
+try {
+var role = member.guild.roles.find('name', 'unverified');
+member.addRole(role)
+} catch(err) {
 
+member.sendMessage("Something went wrong with verifying you. Ensure you're using proper syntax. This error has been noted.")
+    
+}
+
+});
+
+
+
+
+
+
+client.on("guildCreate", guild => {
+
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+});
+
+client.on("guildDelete", guild => {
+
+  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
 client.login("NDU5MTgwODEwNzQyOTIzMjc0.Dgyc-g.p4rRNzzkXWDtJWPEBaBJ_3Nzijo")
