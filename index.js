@@ -38,7 +38,7 @@ client.on('message', message => {
 
     if (message.content.startsWith("$")) {
 
-        //	console.log(message.content + " was used by " + message.author.id);
+        //  console.log(message.content + " was used by " + message.author.id);
         try {
             var lastCommand = message.content;
             fs.appendFileSync("commandlogs.txt", lastCommand + " used by " + message.author.id + " on " + Date() + "\n");
@@ -159,6 +159,10 @@ client.on('message', message => {
         })
 
     };
+
+
+
+
 
     if (message.content === '$avatar') {
         message.reply(message.author.avatarURL);
@@ -544,6 +548,16 @@ client.on('message', message => {
 });
 
 
+    client.on("guildCreate", guild => {
+    console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+    });
+
+    client.on("guildDelete", guild => {
+    console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+    });
+ 
 
 
 request({
