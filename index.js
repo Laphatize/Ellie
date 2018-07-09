@@ -62,13 +62,6 @@ client.on('message', message => {
     }
 
 
-    if (message.content === "$change-token") {
-
-
-        message.reply("Token has been changed. We allow users to change the token whenever they want. If there are alot of people requesting to change the token, we auto-merge all of the requests.")
-
-
-    }
     if (message.content === "$server-region") {
 
         message.reply("Eastern USA || Location may vary within this region.")
