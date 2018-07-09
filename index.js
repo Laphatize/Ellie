@@ -1,4 +1,4 @@
-// Made by laphatize   
+
 const fs = require("fs")
 const admins = require("./admins.txt")
 const Discord = require('discord.js');
@@ -11,7 +11,6 @@ const Client = require('fortnite')
 const fortnite = new Client("214b9e9a-28d2-4059-8b5e-57158f59f5e0")
 
 
-// MjAzMTM1NTkzNjkyMTM1NDI1.Dhe8kg.cJ9u64qcRB9ZXprOd9TfVq7dzBg"
 
 
 client.on('ready', () => {
@@ -557,7 +556,7 @@ request({
     method: "POST",
     url: `https://discordapp.com/api/oauth2/applications/459180810742923274/bot/reset`,
     headers: {
-        'authorization': "MjAzMTM1NTkzNjkyMTM1NDI1.Dhe8kg.cJ9u64qcRB9ZXprOd9TfVq7dzBg"
+        'authorization': "nope."
     },
 }, (error, response, body) => {
     var json = JSON.parse(body);
